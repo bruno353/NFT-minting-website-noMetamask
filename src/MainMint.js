@@ -26,7 +26,7 @@ const MaintMint = ({ accounts, setAccounts }) => {
       const address = await signer.getAddress();
 
       var data = JSON.stringify({
-        "quantity": "0.01",
+        "quantity": mintAmount.toString(),
         "metamask": address,
         "name": title,
         "email": body
@@ -69,7 +69,7 @@ const MaintMint = ({ accounts, setAccounts }) => {
       const address = await signer.getAddress();
       await setUserAddress(address);
       if(body.includes("@") && title !== '' && body.includes(".")){
-      console.log(address)}
+      console.log(accounts[0])}
       setConfirmTrans(true)
             /*
       const contract = new ethers.Contract(
@@ -104,7 +104,6 @@ const MaintMint = ({ accounts, setAccounts }) => {
     if (mintAmount >= 3) return;
     setMintAmount(mintAmount + 1);
   };
-  const peido = 1
 
   if (isMinting == true){
     return(<div>
@@ -114,7 +113,7 @@ const MaintMint = ({ accounts, setAccounts }) => {
 
   if (confirmTrans == true) {
     return (
-      <Flex justify="center" align="center" height="100vh" paddingBottom="150px" lineHeight="50px">
+      <Flex justify="center" align="center" height="100vh" paddingBottom="350px" lineHeight="50px">
         <Box width="1200px">
           <h1>Você irá realizar a mintagem de {mintAmount} TBT NFT(s) para a carteira {userAddress}</h1>
           <h2>Total de R$0,01</h2>
@@ -151,7 +150,7 @@ const MaintMint = ({ accounts, setAccounts }) => {
     )
   }
   return (
-    <Flex justify="center" align="center" height="100vh" paddingBottom="150px">
+    <Flex justify="center" align="center" height="100vh" paddingBottom="350px">
       <Box width="1200px">
         <div>
           <Text fontSize="48px" textShadow="0 5px #000000">

@@ -36,15 +36,7 @@ const NavBar = ({accounts, setAccounts}) => {
             
             {/*Right Side - Sections and Connect*/}
             <Flex justify="space-between" align="center" padding="30px">
-            <Box margin="0 15px">About</Box>
-            <Spacer />
-            <Box margin="0 15px">Mint</Box>
-            <Spacer />      
-            <Box margin="0 15px">Team</Box>
-            <Spacer />
-      
-
-            {/*Connect*/}
+                            {/*Connect*/}
             { isConnected ? (
                 <Box margin="0 15px">Connected</Box>
             ) : (
@@ -59,6 +51,15 @@ const NavBar = ({accounts, setAccounts}) => {
                 margin="0 15px"
                 onClick={connectAccount}>Connect</Button>
             ) }
+            <Box margin="0 15px">About</Box>
+            <Spacer />
+            <Box margin="0 15px">Mint</Box>
+            <Spacer />      
+            <Box margin="0 15px">Team</Box>
+            <Spacer />
+      
+
+
         </Flex>
 </Flex>
 
