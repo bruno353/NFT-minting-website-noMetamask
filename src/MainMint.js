@@ -9,7 +9,7 @@ var axios = require('axios');
 
 const MaintMint = ({ accounts, setAccounts }) => {
   const [mintAmount, setMintAmount] = useState(1);
-  const isConnected = Boolean(accounts[0]);
+  const [isConnected, setIsConnected] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
   const [confirmTrans, setConfirmTrans] = useState(false);
   const [userAddress, setUserAddress] = useState('');
@@ -19,55 +19,43 @@ const MaintMint = ({ accounts, setAccounts }) => {
   async function chamadaAPI() {
     //e.preventDefault();
     setIsMinting(true)
-    if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log(provider)
-      const signer = provider.getSigner();
-      const address = await signer.getAddress();
 
-      var data = JSON.stringify({
-        "quantity": mintAmount.toString(),
-        "metamask": address,
-        "name": title,
-        "email": body
-      });
-      
-      var config = {
-        method: 'post',
-        url: 'https://parseapi.back4app.com/functions/swapPix',
-        headers: { 
-          'X-Parse-Application-Id': 'cACXAALjoAERRdB7jMAPSvMwBAfv7MC2yebDYxSw', 
-          'X-Parse-REST-API-Key': 'iDcYvliNQkyCRm0L52ca2ghI85cyVNa9zAYI6Xus', 
-          'Content-Type': 'application/json'
-        },
-        data : data
-      };
-      
-      await axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data.result.charge.paymentLinkUrl));
-        window.location.replace(response.data.result.charge.paymentLinkUrl);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-    }
-
-
+    var data = JSON.stringify({
+      "quantity": mintAmount.toString(),
+      "name": title,
+      "email": body
+    });
+    
+    var config = {
+      method: 'post',
+      url: 'https://parseapi.back4app.com/functions/swapPixNoMetamask',
+      headers: { 
+        'X-Parse-Application-Id': 'cACXAALjoAERRdB7jMAPSvMwBAfv7MC2yebDYxSw', 
+        'X-Parse-REST-API-Key': 'iDcYvliNQkyCRm0L52ca2ghI85cyVNa9zAYI6Xus', 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    await axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data.result.charge.paymentLinkUrl));
+      window.location.replace(response.data.result.charge.paymentLinkUrl);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   function cancel() {
     setConfirmTrans(false)
   }
 
+  function handleConnect() {
+    setIsConnected(true)
+  }
+
   async function handleMint() {
-    if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log(provider)
-      const signer = provider.getSigner();
-      const address = await signer.getAddress();
-      await setUserAddress(address);
       if(body.includes("@") && title !== '' && body.includes(".")){
       console.log(accounts[0])}
       setConfirmTrans(true)
@@ -92,7 +80,7 @@ const MaintMint = ({ accounts, setAccounts }) => {
      if(body == '' || title == ''){
       alert("Por favor, preencha todos os campos")
      }
-    }
+  
   }
 
   const handleDecrement = () => {
@@ -162,8 +150,9 @@ const MaintMint = ({ accounts, setAccounts }) => {
             fontFamily="VT323"
             textShadow="0 2px 2px #000000"
           >
-            Minte o NFT com a sua metamask.
+            Não possui uma carteira metamask? Sem problemas, criamos uma para você.
           </Text>
+          
         </div>
 
         {isConnected ? (
@@ -249,16 +238,19 @@ const MaintMint = ({ accounts, setAccounts }) => {
             </Button>
           </div>
         ) : (
-          <Text
-            marginTop="70px"
-            fontSize="30px"
-            letterSpacing="5.5%"
-            fontFamily="VT323"
-            textShadow="0 3px #000000"
-            color="#008fd4"
-          >
-            Connect your wallet to mint.
-          </Text>
+        <Button
+          backgroundColor="#008fd4"
+          borderRadius="5px"
+          boxShadow="0px 2px 2px 1px #0F0F0F"
+          color="white"
+          cursor="pointer"
+          fontFamily="inherit"
+          padding="15px"
+          margin="10"
+          onClick={handleConnect}
+        >
+          Próximo
+        </Button>
         )}
       </Box>
     </Flex>
