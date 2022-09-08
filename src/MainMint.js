@@ -57,8 +57,9 @@ const MaintMint = ({ accounts, setAccounts }) => {
 
   async function handleMint() {
       if(body.includes("@") && title !== '' && body.includes(".")){
-      console.log(accounts[0])}
-      setConfirmTrans(true)
+      console.log(accounts[0])
+      setConfirmTrans(true)}
+      
             /*
       const contract = new ethers.Contract(
         roboPunksNFTAddress,
